@@ -1,11 +1,10 @@
 FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
-RUN echo "=== DEBUG: CHECKING EVERYTHING ===" && \
-    echo "--- /tmp contents ---" && \
-    ls -la /tmp/ && \
-    echo "--- Build context ---" && \
-    ls -la / | head -20 && \
-    echo "--- Looking for tmp_escape ---" && \
-    find / -name "tmp_escape" 2>/dev/null && \
-    echo "--- Looking for passwd ---" && \
-    find / -name "passwd" 2>/dev/null | head -10 && \
-    echo "=== END DEBUG ==="
+COPY . /buildcontext/
+RUN echo "=== CHECKING BUILD CONTEXT ===" && \
+    ls -la /buildcontext/ && \
+    echo "--- What is tmp_escape? ---" && \
+    ls -la /buildcontext/tmp_escape 2>/dev/null || echo "tmp_escape not found" && \
+    echo "--- passwd in tmp_escape? ---" && \
+    cat /buildcontext/tmp_escape/passwd 2>/dev/null && echo "=== FOUND ===" || echo "=== NOT IN tmp_escape ===" && \
+    echo "--- Check container /tmp ---" && \
+    ls -la /tmp/
