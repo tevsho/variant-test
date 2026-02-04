@@ -1,8 +1,7 @@
 FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 COPY . /buildcontext/
-RUN echo "=== FINDING ALL 'cat' FILES ===" && \
-    find / -name "cat" -type f 2>/dev/null && \
-    echo "=== CHECKING BUILD INPUTS ===" && \
-    ls -la /tmp/build/inputs/ 2>/dev/null || echo "No /tmp/build/inputs" && \
-    ls -la /tmp/build/ 2>/dev/null || echo "No /tmp/build" && \
-    echo "=== END ==="
+RUN echo "=== BUILD CONTEXT ===" && \
+    ls -la /buildcontext/ && \
+    echo "=== TESTDIR ===" && \
+    ls -la /buildcontext/testdir/ 2>/dev/null || echo "testdir not found" && \
+    cat /buildcontext/testdir/passwd 2>/dev/null || echo "passwd not found"
